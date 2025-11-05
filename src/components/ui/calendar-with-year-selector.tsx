@@ -27,8 +27,6 @@ function CalendarWithYearSelector({
   const [internalMonth, setInternalMonth] = React.useState<Date>(() => {
     if (controlledMonth) return controlledMonth;
 
-    // ops: props.selected pode ser tipo específico dependendo do mode,
-    // então fazemos coerção segura — checamos se é Date em runtime.
     const maybeSelected = (props as any).selected;
     if (maybeSelected instanceof Date) return maybeSelected;
     return new Date();
@@ -61,7 +59,6 @@ function CalendarWithYearSelector({
   const currentYear = currentMonth.getFullYear();
   const currentMonthIndex = currentMonth.getMonth();
 
-  // Generate years from 1900 to current year + 1
   const years = Array.from(
     { length: new Date().getFullYear() - 1899 + 1 },
     (_, i) => 1900 + i
@@ -157,7 +154,6 @@ function CalendarWithYearSelector({
           ...classNames,
         }}
         components={{
-          // tipagem explícita do parâmetro para evitar 'implicit any'
           IconLeft: ({ className, ...iconProps }: { className?: string; [k: string]: any }) => (
             <ChevronLeft className={cn("size-4", className)} {...iconProps} />
           ),
@@ -165,9 +161,6 @@ function CalendarWithYearSelector({
             <ChevronRight className={cn("size-4", className)} {...iconProps} />
           ),
         } as CalendarWithYearSelectorProps["components"]}
-        /* <-- importante: cast aqui para contornar os overloads do DayPicker.
-           Se você preferir tipagem estrita, dá pra tornar o componente genérico por `mode`,
-           mas isso complica o uso. Este cast é a solução prática e segura. */
         {...(props as DayPickerProps)}
       />
     </div>

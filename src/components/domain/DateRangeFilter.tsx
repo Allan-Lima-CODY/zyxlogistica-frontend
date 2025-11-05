@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CalendarWithYearSelector } from '../ui/calendar-with-year-selector';
+import { SmartCalendar } from '../ui/smart-calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Button } from '../ui/button';
 import { CalendarIcon } from 'lucide-react';
@@ -27,10 +28,9 @@ export const DateRangeFilter = ({
   const [endMonth, setEndMonth] = useState<Date>(endDate);
 
   useEffect(() => {
-    // Validate date range (max 3 months)
     const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    const maxDays = 90; // approximately 3 months
+    const maxDays = 90;
 
     if (diffDays > maxDays) {
       setError('A diferença máxima entre as datas deve ser de 3 meses');
@@ -41,7 +41,6 @@ export const DateRangeFilter = ({
     }
   }, [startDate, endDate]);
 
-  // Update internal month state when dates change
   useEffect(() => {
     setStartMonth(startDate);
   }, [startDate]);
@@ -73,8 +72,7 @@ export const DateRangeFilter = ({
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-<CalendarWithYearSelector
-  mode="single"
+<SmartCalendar
   selected={startDate}
   onSelect={(date: Date | undefined) => date && onStartDateChange(date)}
   month={startMonth}
@@ -107,8 +105,7 @@ export const DateRangeFilter = ({
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-            <CalendarWithYearSelector
-  mode="single"
+            <SmartCalendar
   selected={endDate}
   onSelect={(date: Date | undefined) => date && onEndDateChange(date)}
   month={endMonth}
